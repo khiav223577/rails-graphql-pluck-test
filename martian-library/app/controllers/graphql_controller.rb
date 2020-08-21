@@ -5,14 +5,12 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
 
   def execute
-    variables = prepare_variables(params[:variables])
-    query = params[:query]
-    operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    }
-    result = MartianLibrarySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = MartianLibrarySchema.execute(
+      params[:query],
+      variables: prepare_variables(params[:variables]),
+      context: { current_user: current_user },
+      operation_name: params[:operationName]
+    )
     render json: result
   rescue => e
     raise e unless Rails.env.development?
