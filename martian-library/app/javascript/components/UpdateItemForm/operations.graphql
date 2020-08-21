@@ -18,3 +18,13 @@ mutation UpdateItemMutation(
     }
   }
 }
+
+mutation DestroyItemMutation(
+  $id: ID!
+) {
+  destroyItem(
+    id: $id
+  ) {
+    errors
+  }
+}

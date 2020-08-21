@@ -13,7 +13,7 @@ const Library = () => {
           {loading || !data.items
             ? "loading..."
             : data.items.map(({ title, id, user, imageUrl, description }) => (
-              <div>
+              <div key={id}>
                 <button
                   key={id}
                   className={cs.plate}
@@ -29,11 +29,11 @@ const Library = () => {
                 {
                   item !== null && (
                   <UpdateItemForm
-                  id={item.id}
-                  initialTitle={item.title}
-                  initialDescription={item.description}
-                  initialImageUrl={item.imageUrl}
-                  onClose={() => setItem(null)}
+                    id={item.id}
+                    initialTitle={item.title}
+                    initialDescription={item.description}
+                    initialImageUrl={item.imageUrl}
+                    onClose={() => setItem(null)}
                   />
                   )
                 }

@@ -23,3 +23,13 @@
   font-size: 15px;
   width: 100%;
 }
+
+.button {
+  width: 100%;
+  margin-bottom: 10px;
+  border: none;
+  background: #dc600e;
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+}
