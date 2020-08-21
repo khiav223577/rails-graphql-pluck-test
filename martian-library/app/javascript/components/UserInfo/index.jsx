@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Query, Mutation } from "react-apollo";
-import { Me, SignMeIn } from "./operations.graphql";
+import { Me, SignMeIn, SignMeOut } from "./operations.graphql";
 import cs from "./styles";
 
 const UserInfo = () => {
@@ -59,7 +59,45 @@ const UserInfo = () => {
           }
 
           const { fullName } = data.me;
-          return <div className={cs.info}>😈 {fullName}</div>;
+          return (
+            <div style={{ width: '100%' }}>
+              <div className={cs.info}>😈 {fullName}</div>
+              <Mutation
+                mutation={SignMeOut}
+                update={(cache, { data: { signOut } }) => {
+                  cache.writeQuery({
+                    query: Me,
+                    data: { me: null }
+                  });
+                }}
+              >
+                {(signOut, { loading: authenticating }) =>
+                  authenticating ? (
+                    "..."
+                  ) : (
+                    <div className={cs.signOut}>
+                      <form
+                        onSubmit={event => {
+                          signOut({
+                            variables: { token: localStorage.getItem('mlToken') }
+                          }).then(() => {
+                            localStorage.removeItem("mlToken");
+                          });
+                          event.preventDefault();
+                        }}
+                      >
+                        <input
+                          type="submit"
+                          className={cs.button}
+                          value="Sign out"
+                        />
+                      </form>
+                    </div>
+                  )
+                }
+              </Mutation>
+            </div>
+          );
         }}
       </Query>
     </div>

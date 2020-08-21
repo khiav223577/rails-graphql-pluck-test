@@ -14,3 +14,9 @@ mutation SignMeIn($email: String!) {
     }
   }
 }
+
+mutation SignMeOut($token: String!) {
+  signOut(token: $token) {
+    ok
+  }
+}

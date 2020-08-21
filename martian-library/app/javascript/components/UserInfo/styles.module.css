@@ -39,3 +39,15 @@ html {
 .input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
+
+.signOut {
+  float: right;
+  vertical-align: top;
+  line-height: 42px;
+}
+
+.info {
+  float: left;
+  vertical-align: top;
+  line-height: 42px;
+}
