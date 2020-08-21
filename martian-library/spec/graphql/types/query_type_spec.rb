@@ -27,7 +27,7 @@ RSpec.describe Types::QueryType do
               title
             }
           }
-        QUERY
+          QUERY
         end
         it do
           expect_queries_num(1){ subject }
@@ -51,7 +51,7 @@ RSpec.describe Types::QueryType do
               description
             }
           }
-        QUERY
+         QUERY
         end
         it do
           expect_queries_num(1){ subject }
@@ -69,28 +69,57 @@ RSpec.describe Types::QueryType do
     end
 
     context 'when query with user' do
-      let(:query) do <<~QUERY
-        query {
-          items {
-            title
-            user {
-              fullName
+      context 'when query full_name' do
+        let(:query) do <<~QUERY
+          query {
+            items {
+              title
+              user {
+                fullName
+              }
             }
           }
-        }
-      QUERY
+          QUERY
+        end
+        it do
+          expect_queries_num(4){ subject }
+          is_expected.to eq(
+            'data' => {
+              'items' => [
+                { 'title' => 'Item A', 'user' => { 'fullName' => 'Judy Hopps' } },
+                { 'title' => 'Item B', 'user' => { 'fullName' => 'Judy Hopps' } },
+                { 'title' => 'Item C', 'user' => { 'fullName' => 'Nick Wilde' } },
+              ],
+            },
+          )
+        end
       end
-      it do
-        expect_queries_num(4){ subject }
-        is_expected.to eq(
-          'data' => {
-            'items' => [
-              { 'title' => 'Item A', 'user' => { 'fullName' => 'Judy Hopps' } },
-              { 'title' => 'Item B', 'user' => { 'fullName' => 'Judy Hopps' } },
-              { 'title' => 'Item C', 'user' => { 'fullName' => 'Nick Wilde' } },
-            ],
-          },
-        )
+
+      context 'when query id and email' do
+        let(:query) do <<~QUERY
+          query {
+            items {
+              title
+              user {
+                id
+                email
+              }
+            }
+          }
+          QUERY
+        end
+        it do
+          expect_queries_num(4){ subject }
+          is_expected.to eq(
+            'data' => {
+              'items' => [
+                { 'title' => 'Item A', 'user' => { 'id' => @users[1].id.to_s, 'email' => 'judy.hopps@example.com' } },
+                { 'title' => 'Item B', 'user' => { 'id' => @users[1].id.to_s, 'email' => 'judy.hopps@example.com' } },
+                { 'title' => 'Item C', 'user' => { 'id' => @users[0].id.to_s, 'email' => 'nick.wilde@example.com' } },
+              ],
+            },
+          )
+        end
       end
     end
   end
