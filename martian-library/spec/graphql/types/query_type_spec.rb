@@ -47,7 +47,7 @@ RSpec.describe Types::QueryType do
           items {
             title
             user {
-              full_name
+              fullName
             }
           }
         }
@@ -57,9 +57,9 @@ RSpec.describe Types::QueryType do
         expect(result).to eq(
           'data' => {
             'items' => [
-              { 'title' => 'Item A', 'user' => { 'full_name' => 'Judy Hopps' } },
-              { 'title' => 'Item B', 'user' => { 'full_name' => 'Judy Hopps' } },
-              { 'title' => 'Item C', 'user' => { 'full_name' => 'Nick Wilde' } },
+              { 'title' => 'Item A', 'user' => { 'fullName' => 'Judy Hopps' } },
+              { 'title' => 'Item B', 'user' => { 'fullName' => 'Judy Hopps' } },
+              { 'title' => 'Item C', 'user' => { 'fullName' => 'Nick Wilde' } },
             ],
           },
         )
