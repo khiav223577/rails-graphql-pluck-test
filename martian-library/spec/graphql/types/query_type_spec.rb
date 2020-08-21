@@ -20,25 +20,51 @@ RSpec.describe Types::QueryType do
 
   describe 'items' do
     context 'when query without user' do
-      let(:query) do <<~QUERY
-        query {
-          items {
-            title
+      context 'when query title' do
+        let(:query) do <<~QUERY
+          query {
+            items {
+              title
+            }
           }
-        }
-      QUERY
+        QUERY
+        end
+        it do
+          expect_queries_num(1){ subject }
+          is_expected.to eq(
+            'data' => {
+              'items' => [
+                { 'title' => 'Item A' },
+                { 'title' => 'Item B' },
+                { 'title' => 'Item C' },
+              ],
+            },
+          )
+        end
       end
-      it do
-        expect_queries_num(1){ subject }
-        is_expected.to eq(
-          'data' => {
-            'items' => [
-              { 'title' => 'Item A' },
-              { 'title' => 'Item B' },
-              { 'title' => 'Item C' },
-            ],
-          },
-        )
+
+      context 'when query id and description' do
+        let(:query) do <<~QUERY
+          query {
+            items {
+              id
+              description
+            }
+          }
+        QUERY
+        end
+        it do
+          expect_queries_num(1){ subject }
+          is_expected.to eq(
+            'data' => {
+              'items' => [
+                { 'id' => @items[0].id.to_s, 'description' => 'AAA' },
+                { 'id' => @items[1].id.to_s, 'description' => 'BBB' },
+                { 'id' => @items[2].id.to_s, 'description' => 'CCC' },
+              ],
+            },
+          )
+        end
       end
     end
 
