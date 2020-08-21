@@ -2,7 +2,10 @@ query LibraryQuery {
   items {
     id
     title
+    imageUrl
+    description
     user {
+      id
       email
     }
   }
