@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Types::QueryType do
-  subject(:result) do
+  subject do
     MartianLibrarySchema.execute(query).to_h
   end
 
@@ -29,7 +29,8 @@ RSpec.describe Types::QueryType do
       QUERY
       end
       it do
-        expect(result).to eq(
+        expect_queries_num(1){ subject }
+        is_expected.to eq(
           'data' => {
             'items' => [
               { 'title' => 'Item A' },
@@ -54,7 +55,8 @@ RSpec.describe Types::QueryType do
       QUERY
       end
       it do
-        expect(result).to eq(
+        expect_queries_num(4){ subject }
+        is_expected.to eq(
           'data' => {
             'items' => [
               { 'title' => 'Item A', 'user' => { 'fullName' => 'Judy Hopps' } },
