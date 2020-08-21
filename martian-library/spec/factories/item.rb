@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :item do
     sequence(:title) { |n| "item-#{n}" }
-    user
+    user { create(:user) }
   end
 end
