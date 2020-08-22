@@ -1,11 +1,14 @@
 sudo: false
+language: ruby
+rvm:
+  - 2.6.4
+addons:
+  postgresql: "9.4"
 env:
   global:
     - CC_TEST_REPORTER_ID=be1e7b6b98c13653c18c8cc244a5865190bda9bd2e73d1829b2e48cf5df3572c
-language: ruby
-rvm:
-  - 2.6
-  - 2.7
+  matrix:
+    - DB=pg
 gemfile:
   - Gemfile
 before_install:
@@ -17,7 +20,10 @@ before_install:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
+before_script:
+  - psql -c "SELECT version();"
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
-  - bundle exec rake test
+  - bundle exec rspec
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
