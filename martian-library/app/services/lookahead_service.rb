@@ -1,18 +1,18 @@
 class LookaheadService
   def initialize(lookahread)
     @lookahread = lookahread
-    @type_to_custom_fields = {}
   end
 
   def to_query_params
-    @lookahread.selections.map do |selection|
-      next if selection.name.in?(custom_fields_of(selection.owner_type))
-      next selection.name if selection.selections.empty?
+    @lookahread.selections.flat_map do |selection|
+      next need_columns_for(selection.owner_type, selection.name) if selection.selections.empty?
       next { selection.name => LookaheadService.new(selection).to_query_params }
-    end.compact
+    end.uniq.compact
   end
 
-  def custom_fields_of(type)
-    @type_to_custom_fields[type] ||= type.instance_methods & type.fields.keys.map{|s| s.underscore.to_sym }
+  def need_columns_for(type_klass, field_name)
+    field_need_columns = type_klass::FIELD_NEED_COLUMNS || {}
+    return field_need_columns[field_name] if field_need_columns.key?(field_name)
+    return field_name
   end
 end

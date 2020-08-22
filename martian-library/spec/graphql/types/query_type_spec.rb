@@ -82,7 +82,7 @@ RSpec.describe Types::QueryType do
           QUERY
         end
         it do
-          expect_queries_num(4){ subject }
+          expect_queries_num(2){ subject }
           is_expected.to eq(
             'data' => {
               'items' => [
@@ -109,7 +109,7 @@ RSpec.describe Types::QueryType do
           QUERY
         end
         it do
-          expect_queries_num(4){ subject }
+          expect_queries_num(2){ subject }
           is_expected.to eq(
             'data' => {
               'items' => [
