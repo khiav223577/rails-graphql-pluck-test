@@ -7,6 +7,7 @@ addons:
 env:
   global:
     - CC_TEST_REPORTER_ID=be1e7b6b98c13653c18c8cc244a5865190bda9bd2e73d1829b2e48cf5df3572c
+    - PG_DB_PREFIX=travis_ci
   matrix:
     - DB=pg
 gemfile:
